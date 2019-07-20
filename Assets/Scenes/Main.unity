@@ -14820,6 +14820,11 @@ PrefabInstance:
       propertyPath: wpnPwr
       value: 41
       objectReference: {fileID: 0}
+    - target: {fileID: 2367009742910143433, guid: f04f6323854053144bd7f03808b11d5c,
+        type: 3}
+      propertyPath: defence
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 2051857497241166634, guid: f04f6323854053144bd7f03808b11d5c,
         type: 3}
       propertyPath: maxLevel

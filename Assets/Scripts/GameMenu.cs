@@ -24,6 +24,8 @@ public class GameMenu : MonoBehaviour
     public Text statusText;
     public GameObject[] statusButtons;
 
+    public ItemButton[] itemButtons;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -127,6 +129,26 @@ public class GameMenu : MonoBehaviour
         {
             statusButtons[i].SetActive(playerStats[i].gameObject.activeInHierarchy);
             statusButtons[i].GetComponentInChildren<Text>().text = playerStats[i].charName;
+        }
+    }
+
+    public void ShowItems()
+    {
+        for(int i = 0; i < itemButtons.Length; i++)
+        {
+            itemButtons[i].buttonValue = i;
+
+            if (GameManager.instance.itemsHeld[i] != "")
+            {
+                itemButtons[i].buttonImage.gameObject.SetActive(true);
+                itemButtons[i].buttonImage.sprite = GameManager.instance.GetItemDetails(GameManager.instance.itemsHeld[i]).itemSprite;
+                itemButtons[i].amountText.text = GameManager.instance.numOfItems[i].ToString();
+            }
+            else
+            {
+                itemButtons[i].buttonImage.gameObject.SetActive(false);
+                itemButtons[i].amountText.text = "";
+            }
         }
     }
 }

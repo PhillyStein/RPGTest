@@ -11,11 +11,14 @@ public class GameManager : MonoBehaviour
 
     public bool gameMenuOpen, 
                 dialogueActive,
-                fadingBetweenAreas;
+                fadingBetweenAreas,
+                shopActive;
 
     public string[] itemsHeld;
     public int[] numOfItems;
     public Item[] referenceItems;
+
+    public int currentGold;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +33,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(gameMenuOpen || dialogueActive || fadingBetweenAreas)
+        if(gameMenuOpen || dialogueActive || fadingBetweenAreas || shopActive)
         {
             PlayerController.instance.canMove = false;
         } else {
@@ -62,9 +65,12 @@ public class GameManager : MonoBehaviour
     {
         for(int i = 0; i < referenceItems.Length; i++)
         {
-            if(referenceItems[i].itemName == itemToGrab)
+            if (referenceItems[i] != null)
             {
-                return referenceItems[i];
+                if (referenceItems[i].itemName == itemToGrab)
+                {
+                    return referenceItems[i];
+                }
             }
         }
         
@@ -148,12 +154,17 @@ public class GameManager : MonoBehaviour
             {
                 itemsHeld[newItemPosition] = itemToAdd;
                 numOfItems[newItemPosition]++;
+                if(GameMenu.instance.activeItem == null)
+                {
+                    GameMenu.instance.SelectItem(GetItemDetails(itemsHeld[0]));
+                }
             }
             else
             {
                 Debug.LogError(itemToAdd + " does not exist!");
             }
         }
+        GameMenu.instance.SelectItem(GetItemDetails(itemsHeld[newItemPosition]));
         GameMenu.instance.ShowItems();
     }
 
@@ -197,6 +208,14 @@ public class GameManager : MonoBehaviour
             if(numOfItems[itemPosition] <= 0)
             {
                 itemsHeld[itemPosition] = "";
+                SortItems();
+                if (itemsHeld[0] != "")
+                {
+                    GameMenu.instance.SelectItem(GetItemDetails(itemsHeld[0]));
+                } else
+                {
+                    GameMenu.instance.SelectItem(null);
+                }
             }
 
             GameMenu.instance.ShowItems();

@@ -30,10 +30,14 @@ public class GameMenu : MonoBehaviour
     public Item activeItem;
     public Text itemName,
                 itemDesc,
-                useButtonText;
+                useButtonText,
+                goldText;
 
     public GameObject itemCharChoiceMenu;
     public Text[] itemCharChoiceNames;
+
+    public Button useButton,
+                    discardButton;
 
     public static GameMenu instance;
 
@@ -52,8 +56,6 @@ public class GameMenu : MonoBehaviour
         {
             if(theMenu.activeInHierarchy)
             {
-                //theMenu.SetActive(false);
-                //GameManager.instance.gameMenuOpen = false;
                 CloseMenu();
             } else
             {
@@ -106,6 +108,8 @@ public class GameMenu : MonoBehaviour
                         "\n Equpped Armour: " + playerStats[playerNumber].equippedArmr +
                         "\n Armour Power: " + playerStats[playerNumber].armrPwr +
                         "\n XP to Next Level: " + playerStats[playerNumber].expToNextLvl[playerStats[playerNumber].charLevel];
+
+        goldText.text = GameManager.instance.currentGold + " G";
     }
 
     public void ToggleWindow(int windowNumber)
@@ -173,20 +177,33 @@ public class GameMenu : MonoBehaviour
 
     public void SelectItem(Item newItem)
     {
-        activeItem = newItem;
-
-        if(activeItem.isItem)
+        if (newItem != null)
         {
-            useButtonText.text = "Use";
-        }
 
-        if(activeItem.isWeapon || activeItem.isArmour)
+            useButton.gameObject.SetActive(true);
+            discardButton.gameObject.SetActive(true);
+
+            activeItem = newItem;
+
+            if (activeItem.isItem)
+            {
+                useButtonText.text = "Use";
+            }
+
+            if (activeItem.isWeapon || activeItem.isArmour)
+            {
+                useButtonText.text = "Equip";
+            }
+
+            itemName.text = activeItem.itemName;
+            itemDesc.text = activeItem.description;
+        } else
         {
-            useButtonText.text = "Equip";
+            useButton.gameObject.SetActive(false);
+            discardButton.gameObject.SetActive(false);
+            itemName.text = "";
+            itemDesc.text = "";
         }
-
-        itemName.text = activeItem.itemName;
-        itemDesc.text = activeItem.description;
     }
 
     public void DiscardItem()

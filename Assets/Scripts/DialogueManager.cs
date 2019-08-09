@@ -17,15 +17,16 @@ public class DialogueManager : MonoBehaviour
 
     public static DialogueManager instance;
 
+    private string questToMark;
+    private bool markQuestComplete;
+    private bool shouldMarkQuest;
+
     private bool justStarted;
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
-
-        //nameText.text = "Agent 74";
-        //dialogueText.text = dialogueLines[0];
     }
 
     // Update is called once per frame
@@ -44,6 +45,19 @@ public class DialogueManager : MonoBehaviour
                         dialogueBox.SetActive(false);
                         
                         GameManager.instance.dialogueActive = false;
+
+                        if(shouldMarkQuest)
+                        {
+                            shouldMarkQuest = false;
+                            if(markQuestComplete)
+                            {
+                                QuestManager.instance.MarkQuestComplete(questToMark);
+                            }
+                            else
+                            {
+                                QuestManager.instance.MarkQuestIncomplete(questToMark);
+                            }
+                        }
                     }
                     else
                     {
@@ -99,5 +113,13 @@ public class DialogueManager : MonoBehaviour
             nameText.text = dialogueLines[currentLine].Replace("n-", "");
             currentLine++;
         }
+    }
+
+    public void ShouldActivateQuestAtEnd(string questName, bool shouldComplete)
+    {
+        questToMark = questName;
+        markQuestComplete = shouldComplete;
+
+        shouldMarkQuest = true;
     }
 }

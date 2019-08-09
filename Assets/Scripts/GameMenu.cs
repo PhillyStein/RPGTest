@@ -235,4 +235,10 @@ public class GameMenu : MonoBehaviour
         activeItem.Use(selectChar);
         closeItemCharChoice();
     }
+
+    public void SaveGame()
+    {
+        GameManager.instance.SaveData();
+        QuestManager.instance.SaveQuestData();
+    }
 }

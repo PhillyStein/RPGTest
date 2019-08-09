@@ -11,6 +11,10 @@ public class DialogueActivator : MonoBehaviour
 
     public bool isPerson = true;
 
+    public bool shouldActivateQuest;
+    public string questToMark;
+    public bool markComplete;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,6 +27,7 @@ public class DialogueActivator : MonoBehaviour
         if(canActivate && Input.GetButtonDown("Fire1") && !DialogueManager.instance.dialogueBox.activeInHierarchy)
         {
             DialogueManager.instance.ShowDialogue(lines, isPerson);
+            DialogueManager.instance.ShouldActivateQuestAtEnd(questToMark, markComplete);
         }
     }
 
